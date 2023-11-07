@@ -5,12 +5,16 @@ import re
 def adicionar_tarefa():
     descricao = entrada_descricao.get()
     data_limite = entrada_data_limite.get()
+  
 
     if descricao and data_limite and re.match(r"\d{2}/\d{2}/\d{4}", data_limite):
         cursor.execute("INSERT INTO tarefas (descricao, data_limite) VALUES (?, ?)", (descricao, data_limite))
         conn.commit()
         listar_tarefas()
         limpar_campos()
+    with open("tarefas.txt", "w") as arquivo:
+        tarefas= f"Descricao: {descricao},\nData limite: {data_limite}"
+        arquivo.write(tarefas)
 
 def listar_tarefas():
     lista_tarefas.delete(0, tk.END)
